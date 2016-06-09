@@ -132,4 +132,11 @@ public class Board {
         
         return true;
     }
+    
+    public boolean squareIsMine(int row, int col) {
+        if(squares[row][col].isMine()) {
+            return true;
+        }
+        return false;
+    }
 }
