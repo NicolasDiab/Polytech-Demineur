@@ -1,23 +1,11 @@
-package sample;
+package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -31,6 +19,8 @@ public class Launcher {
     private MenuBar mainMenuBar;
     @FXML
     private BorderPane borderPane;
+    @FXML
+    private Label lblScore;
 
     public Launcher(Stage primaryStage) throws Exception{
         int levelSize = 20;
@@ -58,7 +48,6 @@ public class Launcher {
         }*/
 
         primaryStage.setScene(scene);
-
         primaryStage.show();
     }
 }
