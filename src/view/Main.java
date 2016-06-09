@@ -60,7 +60,8 @@ public class Main extends Application {
         m.addObserver(new Observer() {
 
             @Override
-            public void update(Observable o, Object arg) {;
+            public void update(Observable o, Object arg) {
+
                if (m.isWon() == "Victory") {
                     affichage.setText(" Victoire !");
                 } else if (m.isWon() == "Defeat"){
