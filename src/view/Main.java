@@ -1,7 +1,8 @@
 package view;
 
+import core.Board;
+import core.Model;
 import javafx.application.Application;
-import javafx.beans.Observable;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,18 +18,21 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import java.util.Observer;
+import java.util.Observable;
 
 public class Main extends Application {
     // Ajouter la classe modèle
-    Modele m;
+    core.Model m;
     Text affichage;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage){
         int levelSize = 20;
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         //primaryStage.setTitle("Démineur - Diab / Piat");
         //Scene scene = new Scene(root, 1000, 1000);
+
+        m = new Model();
 
         // gestion du placement (permet de placer le champ Text affichage en haut, et GridPane gPane au centre)
         BorderPane border = new BorderPane();
@@ -50,14 +54,15 @@ public class Main extends Application {
 
             @Override
             public void update(Observable o, Object arg) {
-                if (m.isWon() == "Victory") {
+                affichage.setText(" Victoire !");
+/*                if (m.isWon() == "Victory") {
                     affichage.setText(" Victoire !");
                 } else if (m.isWon() == "Defeat"){
                     affichage.setText("Défaite !");
                 }
                 else{
                     affichage.setText("La partie est en cours ... ");
-                }
+                }*/
             }
         });
         // on efface affichage lors du clic
@@ -70,8 +75,19 @@ public class Main extends Application {
 
         });
 
+
+        Board board = new Board(levelSize,levelSize,15);
+
+        String [] stringMat = new String[(levelSize*levelSize)];
+        for (int x = 0; x<levelSize; ++x){
+            for (int y=0;y<levelSize; ++y){
+                stringMat[levelSize*y + x] = " ";
+            }
+        }
+
+
         // création des bouton et placement dans la grille
-        for (String s : new String[]{" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "(", ")"}) {
+        for (String s : stringMat) {
             final Text t = new Text(s);
             t.setWrappingWidth(30);
             t.setFont(Font.font ("Verdana", 20));
