@@ -19,7 +19,6 @@ public class Model extends Observable {
         boolean status = board.gameIsWon();
         if (status) {
             state = "Victory";
-            
         } else if(board.squareIsMine(row, col)) {
             state = "Defeat";
         } else {
