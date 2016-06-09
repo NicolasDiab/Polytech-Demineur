@@ -22,7 +22,7 @@ public class Board {
         this.columns = columns;
         this.mines = nbMine;
         
-        squares = new Square[rows][columns];
+        squares = new Square[this.rows][this.columns];
         
         // add squares
         addSquares();
@@ -34,7 +34,7 @@ public class Board {
     // Constructor method. Add squares to the map
     private void addSquares() {
         for(int i=0; i<rows; ++i) {
-            for(int j=0; j<columns; ++i) {
+            for(int j=0; j<columns; ++j) {
                 Square square = new Square(i, j);
                 squares[i][j] = square;
             }
