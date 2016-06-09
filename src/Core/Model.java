@@ -23,6 +23,7 @@ public class Model extends Observable {
             state = "Defeat";
         } else {
             state = "Running";
+            board.clic(row, col);
         }
         
         // notification de la vue, suite à la mise à jour des champs state et score
