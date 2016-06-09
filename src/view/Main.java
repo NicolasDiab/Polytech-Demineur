@@ -31,6 +31,8 @@ public class Main extends Application {
     Text affichage;
     int column;
     int row;
+    public Board board;
+    public String [] stringMat;
 
     @Override
     public void start(Stage primaryStage){
@@ -50,7 +52,6 @@ public class Main extends Application {
         column = 0;
         row = 0;
 
-
         affichage = new Text("");
         affichage.setFont(Font.font ("Verdana", 20));
         affichage.setFill(Color.RED);
@@ -58,33 +59,57 @@ public class Main extends Application {
 
         // la vue observe les "update" du modèle, et réalise les mises à jour graphiques
         m.addObserver(new Observer() {
-
             @Override
             public void update(Observable o, Object arg) {
+                for(int x=0; x<levelSize;++x){
+                    for(int y=0; y<levelSize; ++y){
+                        if(board.getSquares()[x][y].isVisible()){
+                            if(board.getSquares()[x][y].isMine()){
+                                stringMat[levelSize*y + x] = "M";
+                            }
+                            else if(board.getSquares()[x][y].isFlag()){
+                                stringMat[levelSize*y + x] = "F";
+                            }
+                            else{
+                                stringMat[levelSize*y + x] = board.getSquares()[x][y].getNbNeighbourMines() + "";
+                            }
+                        }
+                    }
+                }
+                column = 0;
+                row = 0;
+                // Reconstruction du BOARD
+                for (int i=0; i<levelSize*levelSize; ++i) {
+                    final Text t = new Text(stringMat[i]);
+                    t.setWrappingWidth(30);
+                    t.setFont(Font.font ("Verdana", 20));
+                    t.setTextAlignment(TextAlignment.CENTER);
 
-               if (m.isWon() == "Victory") {
-                    affichage.setText(" Victoire !");
-                } else if (m.isWon() == "Defeat"){
-                    affichage.setText("Défaite !");
+                    gPane.add(t, row, column++);
+
+                    if (column > levelSize-1) {
+                        column = 0;
+                        row++;
+                    }
+
+                    int finalI = i;
+                    t.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+
+                            m.clic(board,  finalI /20, column);
+                            board = m.getBoard();
+                        }
+                    });
                 }
-                else{
-                    affichage.setText("La partie est en cours ... ");
-                }
+
+                affichage.setText(m.isWon());
             }
         });
-        // on efface affichage lors du clic
-        affichage.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-            @Override
-            public void handle(MouseEvent event) {
-                affichage.setText("");
-            }
-        });
+        board = new Board(levelSize,levelSize,15);
 
-
-        Board board = new Board(levelSize,levelSize,15);
-
-        String [] stringMat = new String[(levelSize*levelSize)];
+        stringMat = new String[(levelSize*levelSize)];
         for (int x = 0; x<levelSize; ++x){
             for (int y=0;y<levelSize; ++y){
                 stringMat[levelSize*y + x] = " ";
@@ -92,7 +117,7 @@ public class Main extends Application {
         }
 
 
-        // création des bouton et placement dans la grille
+        // create buttons
         for (int i=0; i<levelSize*levelSize; ++i) {
             String s = stringMat[i];
             final Text t = new Text(s);
@@ -100,34 +125,24 @@ public class Main extends Application {
             t.setFont(Font.font ("Verdana", 20));
             t.setTextAlignment(TextAlignment.CENTER);
 
-            gPane.add(t, column++, row);
+            gPane.add(t, row, column++);
 
             if (column > levelSize-1) {
                 column = 0;
                 row++;
             }
 
-            // un controleur (EventHandler) par bouton écoute et met à jour le champ affichage
+            // listen left clicks on affichage
             int finalI = i;
             t.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     affichage.setText(affichage.getText() + t.getText());
                     m.clic(board,  finalI /20, column);
-
+                    board = m.getBoard();
                 }
             });
         }
-
-/*
-        // un controleur écoute le bouton "=" et déclenche l'appel du modèle
-        t.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                m.calc(affichage.getText());
-            }
-        });*/
 
         gPane.setGridLinesVisible(true);
         border.setCenter(gPane);
@@ -135,27 +150,6 @@ public class Main extends Application {
         primaryStage.setTitle("Démineur Diab / Piat");
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
-/*        for (int i = 0; i < levelSize; i++) {
-            ColumnConstraints colConst = new ColumnConstraints();
-            colConst.setPercentWidth(100.0 / levelSize);
-            mainGridPane.getColumnConstraints().add(colConst);
-        }
-        for (int i = 0; i < levelSize; i++) {
-            RowConstraints rowConst = new RowConstraints();
-            rowConst.setPercentHeight(100.0 / levelSize);
-            mainGridPane.getRowConstraints().add(rowConst);
-        }*/
-
-        //MainGridPane.addRow(1);
-/*        Button myButton = new Button();
-        myButton.setText("YOLO");
-        //mainGridPane.add(myButton,0,0);
-        for(int i=0; i<levelSize; ++i){
-            mainGridPane.add(new Button(), 0, 0);
-        }*/
-        //Launcher launcher = new Launcher(primaryStage);
     }
 
     public static void main(String[] args) {
