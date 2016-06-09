@@ -12,7 +12,7 @@ import java.util.*;
  * @author Nicolas
  */
 public class Board {
-    private final Square[][] board;
+    private final Square[][] squares;
     private final int rows;
     private final int columns;
     private final int mines;
@@ -22,7 +22,7 @@ public class Board {
         this.columns = columns;
         this.mines = nbMine;
         
-        board = new Square[rows][columns];
+        squares = new Square[rows][columns];
         
         // add squares
         addSquares();
@@ -36,7 +36,7 @@ public class Board {
         for(int i=0; i<rows; ++i) {
             for(int j=0; j<columns; ++i) {
                 Square square = new Square(i, j);
-                board[i][j] = square;
+                squares[i][j] = square;
             }
         }
     }
@@ -51,8 +51,8 @@ public class Board {
             do {
             row = rn.nextInt(10); // int between 0 and 9
             column = rn.nextInt(10);
-            } while(board[row][column].isMine());
-            Square square = board[row][column];
+            } while(squares[row][column].isMine());
+            Square square = squares[row][column];
             square.setMine(true);
             
             // for each neighbour incrementes the number of neighbour mines
@@ -76,7 +76,7 @@ public class Board {
         for(; i<maxI; ++i) {
             for(; j<maxJ; ++i) {
                 if (i!=row && j!=column) {
-                    list.add(board[row-1][column-1]);
+                    list.add(squares[row-1][column-1]);
                 }
             }
         }
@@ -85,7 +85,7 @@ public class Board {
     }
     
     public int clic(int row, int column) {
-        Square square = board[row][column];
+        Square square = squares[row][column];
         // if players clics on a mine, return -1, game over
         if (square.isMine()) {
             return -1;
@@ -123,7 +123,7 @@ public class Board {
     public boolean gameIsWon() {
         for(int i=0; i<rows; ++i) {
             for(int j=0; j<columns; ++i) {
-                Square square = board[i][j];
+                Square square = squares[i][j];
                 if(!square.isVisible() && !square.isMine()) {
                     return false;
                 }
@@ -131,5 +131,12 @@ public class Board {
         }
         
         return true;
+    }
+    
+    public boolean squareIsMine(int row, int col) {
+        if(squares[row][col].isMine()) {
+            return true;
+        }
+        return false;
     }
 }
