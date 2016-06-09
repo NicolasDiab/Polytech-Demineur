@@ -49,11 +49,10 @@ public class Board {
             int row;
             int column;
             do {
-            row = rn.nextInt(10); // int between 0 and 9
-            column = rn.nextInt(10);
+            row = rn.nextInt(rows); // int between 0 and rows-1 / columns-1
+            column = rn.nextInt(columns);
             } while(squares[row][column].isMine());
-            Square square = squares[row][column];
-            square.setMine(true);
+            squares[row][column].setMine(true);
             
             // for each neighbour incrementes the number of neighbour mines
             List<Square> neighbours = getNeighbourSquares(row, column);
@@ -69,14 +68,14 @@ public class Board {
         
         // loop for 3*3 squares around the middle one
         // if side board is reached don't loop in
-        int i = row == 0 ? row : row+1;
-        int maxI = row == this.rows ? row : row+1;
-        int j = column == 0 ? column : row+1;
-        int maxJ = column == this.columns ? column : column+1;
+        int i = (row == 0) ? row : row-1;
+        int maxI = (row == this.rows-1) ? row : row+1;
+        int j = (column == 0) ? column : column-1;
+        int maxJ = (column == this.columns-1) ? column : column+1;
         for(; i<maxI; ++i) {
-            for(; j<maxJ; ++i) {
+            for(; j<maxJ; ++j) {
                 if (i!=row && j!=column) {
-                    list.add(squares[row-1][column-1]);
+                    list.add(squares[i][j]);
                 }
             }
         }
