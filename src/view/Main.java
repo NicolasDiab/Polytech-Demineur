@@ -157,7 +157,6 @@ public class Main extends Application {
         //Launcher launcher = new Launcher(primaryStage);
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }
