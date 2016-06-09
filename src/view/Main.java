@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
+import javafx.scene.effect.Shadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -17,6 +19,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.Observer;
 import java.util.Observable;
 
@@ -24,6 +29,8 @@ public class Main extends Application {
     // Ajouter la classe modèle
     core.Model m;
     Text affichage;
+    int column;
+    int row;
 
     @Override
     public void start(Stage primaryStage){
@@ -40,8 +47,8 @@ public class Main extends Application {
         // permet de placer les diffrents boutons dans une grille
         GridPane gPane = new GridPane();
 
-        int column = 0;
-        int row = 0;
+        column = 0;
+        row = 0;
 
 
         affichage = new Text("");
@@ -53,16 +60,15 @@ public class Main extends Application {
         m.addObserver(new Observer() {
 
             @Override
-            public void update(Observable o, Object arg) {
-                affichage.setText(" Victoire !");
-/*                if (m.isWon() == "Victory") {
+            public void update(Observable o, Object arg) {;
+               if (m.isWon() == "Victory") {
                     affichage.setText(" Victoire !");
                 } else if (m.isWon() == "Defeat"){
                     affichage.setText("Défaite !");
                 }
                 else{
                     affichage.setText("La partie est en cours ... ");
-                }*/
+                }
             }
         });
         // on efface affichage lors du clic
@@ -72,7 +78,6 @@ public class Main extends Application {
             public void handle(MouseEvent event) {
                 affichage.setText("");
             }
-
         });
 
 
@@ -87,7 +92,8 @@ public class Main extends Application {
 
 
         // création des bouton et placement dans la grille
-        for (String s : stringMat) {
+        for (int i=0; i<levelSize*levelSize; ++i) {
+            String s = stringMat[i];
             final Text t = new Text(s);
             t.setWrappingWidth(30);
             t.setFont(Font.font ("Verdana", 20));
@@ -95,26 +101,22 @@ public class Main extends Application {
 
             gPane.add(t, column++, row);
 
-            if (column > 3) {
+            if (column > levelSize-1) {
                 column = 0;
                 row++;
             }
 
             // un controleur (EventHandler) par bouton écoute et met à jour le champ affichage
+            int finalI = i;
             t.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
                 @Override
                 public void handle(MouseEvent event) {
                     affichage.setText(affichage.getText() + t.getText());
+                    m.clic(board,  finalI /20, column);
+
                 }
             });
         }
-
-        final Text t = new Text("=");
-        t.setWrappingWidth(30);
-        gPane.add(t, column++, row);
-        t.setTextAlignment(TextAlignment.CENTER);
-        //t.setEffect(new Shadow());
 
 /*
         // un controleur écoute le bouton "=" et déclenche l'appel du modèle
