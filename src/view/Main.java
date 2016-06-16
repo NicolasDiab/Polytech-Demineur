@@ -96,8 +96,10 @@ public class Main extends Application {
                     t.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent event) {
-
-                            m.clic(board,  finalI /20, column);
+                            Double div = (double)finalI/(double)levelSize;
+                            int intPart = div.intValue();
+                            int decPart = (int)((div*100 - ( intPart * 100)) /5);
+                            m.clic(board,  decPart, intPart);
                             board = m.getBoard();
                         }
                     });
@@ -137,8 +139,10 @@ public class Main extends Application {
             t.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    affichage.setText(affichage.getText() + t.getText());
-                    m.clic(board,  finalI /20, column);
+                    Double div = (double)finalI/(double)levelSize;
+                    int intPart = div.intValue();
+                    int decPart = (int)((div*100 - ( intPart * 100)) /5);
+                    m.clic(board,  decPart, intPart);
                     board = m.getBoard();
                 }
             });
