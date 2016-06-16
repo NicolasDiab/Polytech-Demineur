@@ -13,10 +13,10 @@ import java.util.*;
  */
 public class Board {
 
-    private final Square[][] squares;
-    private final int rows;
-    private final int columns;
-    private final int mines;
+    private Square[][] squares;
+    private int rows;
+    private int columns;
+    private int mines;
 
     public Board(int rows, int columns, int nbMine) {
         this.rows = rows;
@@ -131,6 +131,16 @@ public class Board {
                 }
             }
         }
+    }
+    
+    public void reset() {
+        squares = new Square[this.rows][this.columns];
+
+        // add squares
+        addSquares();
+
+        // add random mines
+        addMines();
     }
 
     public boolean gameIsWon() {

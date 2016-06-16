@@ -17,7 +17,7 @@ public class Model extends Observable {
     int score;
     Board board;
 
-    public void clic(Board board, int row, int col) {
+    public void leftClick(Board board, int row, int col) {
         board.removeFlag(row, col);
         System.out.println("Clic gauche");
         this.board = board;
@@ -37,7 +37,7 @@ public class Model extends Observable {
         notifyObservers();
     }
 
-    public void rightClic(Board board, int row, int col) {
+    public void rightClick(Board board, int row, int col) {
         System.out.println("Clic droit");
         this.board = board;
         Square[][] squares = board.getSquares();
@@ -49,6 +49,11 @@ public class Model extends Observable {
 
         setChanged();
         notifyObservers();
+    }
+    
+    public void reset(Board board) {
+        this.board = board;
+        this.board.reset();
     }
 
     public String isWon() {
