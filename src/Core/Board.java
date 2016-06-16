@@ -95,8 +95,8 @@ public class Board {
         // if players clics on a mine, return -1, game over
         if (square.isMine()) {
             square.setVisible(true);
+            allMinesVisible();
             return -1;
-            //afficher toute sle smines
         }
         
         if (square.getNbNeighbourMines() == 0) {
@@ -134,8 +134,8 @@ public class Board {
     }
     
     public boolean gameIsWon() {
-        for(int i=0; i<=rows-1; i++) {
-            for(int j=0; j<=columns-1; j++) {
+        for(int i=0; i<rows; ++i) {
+            for(int j=0; j<columns; ++j) {
                 Square square = squares[i][j];
                 if(!square.isVisible() && !square.isMine()) {
                     return false;
@@ -160,5 +160,15 @@ public class Board {
     
     public void removeFlag(int row, int col) {
         squares[row][col].setFlag(false);
+    }
+    
+    public void allMinesVisible() {
+        for(int i=0; i<rows; ++i) {
+            for(int j=0; j<columns; ++j) {
+                if (squares[i][j].isMine()) {
+                    squares[i][j].setVisible(true);
+                }
+            }
+        }
     }
 }

@@ -21,12 +21,13 @@ public class Model extends Observable {
         this.board = board;
         boolean status = board.gameIsWon();
         if (status) {
-            state = "Victory";
+            state = "<VICTORY !>";
         } else if(board.squareIsMine(row, col)) {
-            state = "Defeat";
+            board.allMinesVisible();
+            state = "<DEFEAT !>";
             board.clic(row, col);
         } else {
-            state = "Running";
+            state = "<Running>";
             board.clic(row, col);
         }
         
