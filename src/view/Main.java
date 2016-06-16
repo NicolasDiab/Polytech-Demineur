@@ -120,7 +120,9 @@ public class Main extends Application {
                         public void handle(MouseEvent event) {
                             Double div = (double)finalI/(double)levelSize;
                             int intPart = div.intValue();
-                            int decPart = (int)((div*100 - ( intPart * 100)) /5);
+                            // on multiplie pour éviter des erreurs d'arrondi liées à Java
+                            // on gère 3 décimales
+                            int decPart = (int)((div*1000 - ( intPart * 1000)) /50);
                             if(event.getButton() == MouseButton.SECONDARY){
                                 m.rightClic(board,  decPart, intPart);
                             }
@@ -202,7 +204,9 @@ public class Main extends Application {
                 public void handle(MouseEvent event) {
                     Double div = (double)finalI/(double)levelSize;
                     int intPart = div.intValue();
-                    int decPart = (int)((div*100 - ( intPart * 100)) /5);
+                    // on multiplie pour éviter des erreurs d'arrondi liées à Java
+                    // On gère 3 décimales
+                    int decPart = (int)((div*1000 - ( intPart * 1000)) /50);
                     if(event.getButton() == MouseButton.SECONDARY){
                         m.rightClic(board,  decPart, intPart);
                     }
