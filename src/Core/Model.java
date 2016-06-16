@@ -28,7 +28,19 @@ public class Model extends Observable {
             board.clic(row, col);
         }
         
-        // notification de la vue, suite à la mise à jour des champs state et score
+        setChanged();
+        notifyObservers();
+    }
+    
+    public void rightClic(Board board, int row, int col) {
+        this.board = board;
+        Square[][] squares = board.getSquares();
+        if (squares[row][col].isFlag()) {
+            board.removeFlag(row, col);
+        } else {
+            board.putFlag(row, col);
+        }
+        
         setChanged();
         notifyObservers();
     }
