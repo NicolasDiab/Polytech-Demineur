@@ -12,10 +12,11 @@ import java.util.Observable;
  * @author Nicolas
  */
 public class Model extends Observable {
+
     String state;
     int score;
     Board board;
-    
+
     public void clic(Board board, int row, int col) {
         board.removeFlag(row, col);
         System.out.println("Clic gauche");
@@ -23,7 +24,7 @@ public class Model extends Observable {
         boolean status = board.gameIsWon();
         if (status) {
             state = "<VICTORY !>";
-        } else if(board.squareIsMine(row, col)) {
+        } else if (board.squareIsMine(row, col)) {
             board.allMinesVisible();
             state = "<DEFEAT !>";
             board.clic(row, col);
@@ -31,11 +32,11 @@ public class Model extends Observable {
             state = "<Running>";
             board.clic(row, col);
         }
-        
+
         setChanged();
         notifyObservers();
     }
-    
+
     public void rightClic(Board board, int row, int col) {
         System.out.println("Clic droit");
         this.board = board;
@@ -45,18 +46,20 @@ public class Model extends Observable {
         } else {
             board.putFlag(row, col);
         }
-        
+
         setChanged();
         notifyObservers();
     }
-    
+
     public String isWon() {
         return state;
     }
-    
+
     public int getScore() {
         return score;
     }
 
-    public Board getBoard() { return board; }
+    public Board getBoard() {
+        return board;
+    }
 }

@@ -10,18 +10,19 @@ package core;
  * @author Nicolas
  */
 public class Square {
+
     private boolean mine;
-    
+
     private boolean visible;
     private boolean flag;
     private int nbNeighbourMines;
     private int row;
     private int column;
-    
+
     public Square(int row, int column) {
         this(false, row, column);
     }
-    
+
     public Square(boolean mine, int row, int column) {
         this.row = row;
         this.column = column;
@@ -104,6 +105,5 @@ public class Square {
     public int getColumn() {
         return column;
     }
-    
-    
+
 }
