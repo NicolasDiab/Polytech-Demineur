@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import javafx.scene.text.Text;
 import java.util.Observer;
 import java.util.Observable;
-import core.Model;
+
 
 public class Main extends Application {
     Model m;
@@ -71,6 +71,42 @@ public class Main extends Application {
                     t.setFont(Font.font ("Arial", 20));
                     t.setTextAlignment(TextAlignment.CENTER);
 
+
+                    if(stringMat[i].equals("0")){
+                        t.setFill(Color.BEIGE);
+                    }
+                    if(stringMat[i].equals("1")){
+                        t.setFill(Color.BLUE);
+                    }
+                    if(stringMat[i].equals("2")){
+                        t.setFill(Color.GREEN);
+                    }
+                    if(stringMat[i].equals("3")){
+                        t.setFill(Color.RED);
+                    }
+                    if(stringMat[i].equals("4")){
+                        t.setFill(Color.BLUEVIOLET);
+                    }
+                    if(stringMat[i].equals("5")){
+                        t.setFill(Color.FIREBRICK);
+                    }
+                    if(stringMat[i].equals("6")){
+                        t.setFill(Color.AQUAMARINE);
+                    }
+                    if(stringMat[i].equals("7")){
+                        t.setFill(Color.BLACK);
+                    }
+                    if(stringMat[i].equals("8")){
+                        t.setFill(Color.GRAY);
+                    }
+                    if(stringMat[i].equals("F")){
+                        t.setFill(Color.ORANGE);
+                    }
+                    if(stringMat[i].equals("M")){
+                        t.setFill(Color.CHOCOLATE);
+                    }
+
+
                     gPane.add(t, row, column++);
 
                     if (column > levelSize-1) {
@@ -99,7 +135,7 @@ public class Main extends Application {
             }
         });
 
-        board = new Board(levelSize,levelSize,15);
+        board = new Board(levelSize,levelSize,40);
 
         stringMat = new String[(levelSize*levelSize)];
         for (int x = 0; x<levelSize; ++x){
@@ -114,10 +150,45 @@ public class Main extends Application {
             String s = stringMat[i];
             final Text t = new Text(s);
             t.setWrappingWidth(30);
-            t.setFont(Font.font ("Verdana", 20));
+            t.setFont(Font.font ("Arial", 20));
             t.setTextAlignment(TextAlignment.CENTER);
 
+            if(stringMat[i].equals("0")){
+                t.setFill(Color.BEIGE);
+            }
+            if(stringMat[i].equals("1")){
+                t.setFill(Color.BLUE);
+            }
+            if(stringMat[i].equals("2")){
+                t.setFill(Color.GREEN);
+            }
+            if(stringMat[i].equals("3")){
+                t.setFill(Color.RED);
+            }
+            if(stringMat[i].equals("4")){
+                t.setFill(Color.BLUEVIOLET);
+            }
+            if(stringMat[i].equals("5")){
+                t.setFill(Color.FIREBRICK);
+            }
+            if(stringMat[i].equals("6")){
+                t.setFill(Color.AQUAMARINE);
+            }
+            if(stringMat[i].equals("7")){
+                t.setFill(Color.BLACK);
+            }
+            if(stringMat[i].equals("8")){
+                t.setFill(Color.GRAY);
+            }
+            if(stringMat[i].equals("F")){
+                t.setFill(Color.ORANGE);
+            }
+            if(stringMat[i].equals("M")){
+                t.setFill(Color.CHOCOLATE);
+            }
             gPane.add(t, row, column++);
+
+
 
             if (column > levelSize-1) {
                 column = 0;
