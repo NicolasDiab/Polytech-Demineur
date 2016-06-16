@@ -17,6 +17,7 @@ public class Model extends Observable {
     Board board;
     
     public void clic(Board board, int row, int col) {
+        board.removeFlag(row, col);
         System.out.println("Clic gauche");
         this.board = board;
         boolean status = board.gameIsWon();
