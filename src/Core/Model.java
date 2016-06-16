@@ -17,6 +17,7 @@ public class Model extends Observable {
     Board board;
     
     public void clic(Board board, int row, int col) {
+        System.out.println("Clic gauche");
         this.board = board;
         boolean status = board.gameIsWon();
         if (status) {
@@ -34,6 +35,7 @@ public class Model extends Observable {
     }
     
     public void rightClic(Board board, int row, int col) {
+        System.out.println("Clic droit");
         this.board = board;
         Square[][] squares = board.getSquares();
         if (squares[row][col].isFlag()) {

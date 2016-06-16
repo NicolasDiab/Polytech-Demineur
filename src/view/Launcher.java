@@ -38,15 +38,6 @@ public class Launcher {
             rowConst.setPercentHeight(100.0 / levelSize);
             mainGridPane.getRowConstraints().add(rowConst);
         }
-
-        //MainGridPane.addRow(1);
-/*        Button myButton = new Button();
-        myButton.setText("YOLO");
-        //mainGridPane.add(myButton,0,0);
-        for(int i=0; i<levelSize; ++i){
-            mainGridPane.add(new Button(), 0, 0);
-        }*/
-
         primaryStage.setScene(scene);
         primaryStage.show();
     }
