@@ -142,4 +142,12 @@ public class Board {
     public Square[][] getSquares(){
         return squares;
     }
+    
+    public void putFlag(int row, int col) {
+        squares[row][col].setFlag(true);
+    }
+    
+    public void removeFlag(int row, int col) {
+        squares[row][col].setFlag(false);
+    }
 }
