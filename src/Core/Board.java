@@ -70,14 +70,14 @@ public class Board {
         // if side board is reached don't loop in
         int i = (row == 0) ? row : row-1;
         int maxI = (row == this.rows-1) ? row : row+1;
-        int j = (column == 0) ? column : column-1;
+        int retainJ = (column == 0) ? column : column-1;
+        int j = retainJ;
         int maxJ = (column == this.columns-1) ? column : column+1;
-        for(; i<maxI; ++i) {
-            for(; j<maxJ; ++j) {
-                if (i!=row && j!=column) {
-                    list.add(squares[i][j]);
-                }
+        for(; i<=maxI; i++) {
+            for(; j<=maxJ; j++) {
+                list.add(squares[i][j]);
             }
+            j = retainJ;
         }
         
         return list;
