@@ -73,7 +73,7 @@ public class Main extends Application {
 
 
                     if(stringMat[i].equals("0")){
-                        t.setFill(Color.BEIGE);
+                        t.setFill(Color.WHEAT);
                     }
                     if(stringMat[i].equals("1")){
                         t.setFill(Color.BLUE);
@@ -154,7 +154,7 @@ public class Main extends Application {
             t.setTextAlignment(TextAlignment.CENTER);
 
             if(stringMat[i].equals("0")){
-                t.setFill(Color.BEIGE);
+                t.setFill(Color.WHEAT);
             }
             if(stringMat[i].equals("1")){
                 t.setFill(Color.BLUE);
