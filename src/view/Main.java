@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.effect.Shadow;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -96,8 +97,10 @@ public class Main extends Application {
                     t.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent event) {
-
-                            m.clic(board,  finalI /20, column);
+                            Double div = (double)finalI/(double)levelSize;
+                            int intPart = div.intValue();
+                            int decPart = (int)((div*100 - ( intPart * 100)) /5);
+                            m.clic(board,  decPart, intPart);
                             board = m.getBoard();
                         }
                     });
@@ -137,9 +140,24 @@ public class Main extends Application {
             t.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    affichage.setText(affichage.getText() + t.getText());
-                    m.clic(board,  finalI /20, column);
+                    Double div = (double)finalI/(double)levelSize;
+                    int intPart = div.intValue();
+                    int decPart = (int)((div*100 - ( intPart * 100)) /5);
+                    m.clic(board,  decPart, intPart);
                     board = m.getBoard();
+                }
+            });
+
+            t.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    if(e.getButton() == MouseButton.SECONDARY){
+                        Double div = (double)finalI/(double)levelSize;
+                        int intPart = div.intValue();
+                        int decPart = (int)((div*100 - ( intPart * 100)) /5);
+                        m.rightClic(board,  decPart, intPart);
+                        board = m.getBoard();
+                    }
                 }
             });
         }
