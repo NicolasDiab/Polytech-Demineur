@@ -54,6 +54,9 @@ public class Model extends Observable {
     public void reset(Board board) {
         this.board = board;
         this.board.reset();
+        
+        setChanged();
+        notifyObservers();
     }
 
     public String isWon() {
