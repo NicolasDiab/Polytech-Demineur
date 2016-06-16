@@ -138,4 +138,8 @@ public class Board {
         }
         return false;
     }
+
+    public Square[][] getSquares(){
+        return squares;
+    }
 }

@@ -14,8 +14,10 @@ import java.util.Observable;
 public class Model extends Observable {
     String state;
     int score;
+    Board board;
     
     public void clic(Board board, int row, int col) {
+        this.board = board;
         boolean status = board.gameIsWon();
         if (status) {
             state = "Victory";
@@ -38,4 +40,6 @@ public class Model extends Observable {
     public int getScore() {
         return score;
     }
+
+    public Board getBoard() { return board; }
 }
