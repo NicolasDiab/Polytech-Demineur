@@ -23,6 +23,7 @@ public class Model extends Observable {
             state = "Victory";
         } else if(board.squareIsMine(row, col)) {
             state = "Defeat";
+            board.clic(row, col);
         } else {
             state = "Running";
             board.clic(row, col);

@@ -75,7 +75,9 @@ public class Board {
         int maxJ = (column == this.columns-1) ? column : column+1;
         for(; i<=maxI; i++) {
             for(; j<=maxJ; j++) {
-                list.add(squares[i][j]);
+                if (i!=column || j!=row) {
+                    list.add(squares[i][j]);
+                }
             }
             j = retainJ;
         }
@@ -85,30 +87,42 @@ public class Board {
     
     public int clic(int row, int column) {
         Square square = squares[row][column];
-        // if players clics on a mine, return -1, game over
-        if (square.isMine()) {
-            return -1;
-        }
         // if players clics on an already visible square, nothing happens
         if (square.isVisible()) {
             return 0;
         }
+        
+        // if players clics on a mine, return -1, game over
+        if (square.isMine()) {
+            square.setVisible(true);
+            return -1;
+            //afficher toute sle smines
+        }
+        
+        if (square.getNbNeighbourMines() == 0) {
+            discoverNeighbours(row, column);
+        }
+        /*if (gameIsWon()) {
+            square.setVisible(true);
+            return 1;
+        }*/
+        
         square.setVisible(true);
-        
-        discoverNeighbours(row, column);
-        if (gameIsWon()) return 1;
-        
         return 0;
     }
     
     // recursive method - turns neighbour squares visible
     // stop recursity if neighbour is a mine or if square is visible (marked)
     public void discoverNeighbours(int row, int column) {
+        squares[row][column].setVisible(true);
+        
         List<Square> neighbours = getNeighbourSquares(row, column);
         for(Square neighbour : neighbours) {
-            if(!neighbour.isMine()) {
-                // has a mine nerby
+            if(!neighbour.isMine() && !neighbour.isVisible()) {
+                
                 if (neighbour.getNbNeighbourMines() > 0) {
+                    // has a mine nerby
+                    // stop recursivity
                     neighbour.setVisible(true);
                 }
                 else { // recursivity
@@ -120,8 +134,8 @@ public class Board {
     }
     
     public boolean gameIsWon() {
-        for(int i=0; i<rows; ++i) {
-            for(int j=0; j<columns; ++i) {
+        for(int i=0; i<=rows-1; i++) {
+            for(int j=0; j<=columns-1; j++) {
                 Square square = squares[i][j];
                 if(!square.isVisible() && !square.isMine()) {
                     return false;
@@ -133,10 +147,7 @@ public class Board {
     }
     
     public boolean squareIsMine(int row, int col) {
-        if(squares[row][col].isMine()) {
-            return true;
-        }
-        return false;
+        return squares[row][col].isMine();
     }
 
     public Square[][] getSquares(){
