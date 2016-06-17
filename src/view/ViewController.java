@@ -61,7 +61,7 @@ public class ViewController extends Application {
                             stringMat[levelSize * y + x] = " ";
                         }
                     }
-                    
+                    statusDisplay.setText("<RUNNING>"); 
                     Image image = new Image("ressources/smileySouriant.png");
                     iv.setImage(image);
                     
@@ -184,6 +184,7 @@ public class ViewController extends Application {
                     // on gère 3 décimales
                     int decPart = (int) ((div * 1000 - (intPart * 1000)) / 50);
                     if (event.getButton() == MouseButton.SECONDARY) {
+                        stringMat[finalI] = " ";
                         m.rightClick(board, decPart, intPart);
                     } else if (event.getButton() == MouseButton.PRIMARY) {
                         m.leftClick(board, decPart, intPart);
@@ -196,7 +197,9 @@ public class ViewController extends Application {
                 }
             });
         }
-        statusDisplay.setText(m.isWon());
+        if (!statusDisplay.getText().equals("<DEFEAT !>")) {
+           statusDisplay.setText(m.isWon()); 
+        }
     }
 
     public static void main(String[] args) {
