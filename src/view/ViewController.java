@@ -17,8 +17,6 @@ import javafx.scene.text.Text;
 import java.util.Observer;
 import java.util.Observable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -31,6 +29,8 @@ public class ViewController extends Application {
     int row;
     public Board board;
     public String[] stringMat;
+    GridPane gPane;
+    BorderPane border;
 
     @Override
     public void start(Stage primaryStage) {
@@ -39,8 +39,8 @@ public class ViewController extends Application {
 
         m = new Model();
 
-        BorderPane border = new BorderPane();
-        GridPane gPane = new GridPane();
+        border = new BorderPane();
+        gPane = new GridPane();
 
         // Smiley
         StackPane p = new StackPane();
@@ -65,6 +65,9 @@ public class ViewController extends Application {
                     Image image = new Image("ressources/smileySouriant.png");
                     iv.setImage(image);
                     
+                    gPane = new GridPane();
+                    gPane.setGridLinesVisible(true);
+                    border.setBottom(gPane);
                     updateView(gPane, iv, levelSize);
                 }
             }
