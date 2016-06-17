@@ -27,7 +27,6 @@ public class ViewController extends Application {
     Text statusDisplay;
     int column;
     int row;
-    public Board board;
     public String[] stringMat;
     GridPane gPane;
     BorderPane border;
@@ -54,7 +53,7 @@ public class ViewController extends Application {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getButton() == MouseButton.PRIMARY) {
-                    board = new Board(levelSize, levelSize, nbMines);
+                    m.resetBoard(levelSize, levelSize, nbMines);
                     stringMat = new String[(levelSize * levelSize)];
                     for (int x = 0; x < levelSize; ++x) {
                         for (int y = 0; y < levelSize; ++y) {
@@ -81,7 +80,7 @@ public class ViewController extends Application {
         statusDisplay.setFill(Color.RED);
         border.setCenter(statusDisplay);
 
-        board = new Board(levelSize, levelSize, nbMines);
+        m.resetBoard(levelSize, levelSize, nbMines);
 
         stringMat = new String[(levelSize * levelSize)];
         for (int x = 0; x < levelSize; ++x) {
@@ -110,14 +109,15 @@ public class ViewController extends Application {
     public void updateView(GridPane gPane, ImageView iv, int levelSize) {
         for (int x = 0; x < levelSize; ++x) {
             for (int y = 0; y < levelSize; ++y) {
-                if (board.getSquares()[x][y].isFlag()) {
+                if (m.getBoard().getSquares()[x][y].isFlag()) {
                     stringMat[levelSize * y + x] = "F";
                 }
-                if (board.getSquares()[x][y].isVisible()) {
-                    if (board.getSquares()[x][y].isMine()) {
+                if (m.getBoard().getSquares()[x][y].isVisible()) {
+                    if (m.getBoard().getSquares()[x][y].isMine()) {
                         stringMat[levelSize * y + x] = "M";
                     } else {
-                        stringMat[levelSize * y + x] = board.getSquares()[x][y].getNbNeighbourMines() + "";
+                        stringMat[levelSize * y + x] = m.getBoard().getSquares()[x][y]
+                                .getNbNeighbourMines() + "";
                     }
                 }
             }
@@ -185,11 +185,10 @@ public class ViewController extends Application {
                     int decPart = (int) ((div * 1000 - (intPart * 1000)) / 50);
                     if (event.getButton() == MouseButton.SECONDARY) {
                         stringMat[finalI] = " ";
-                        m.rightClick(board, decPart, intPart);
+                        m.rightClick(decPart, intPart);
                     } else if (event.getButton() == MouseButton.PRIMARY) {
-                        m.leftClick(board, decPart, intPart);
+                        m.leftClick(decPart, intPart);
                     }
-                    board = m.getBoard();
                     if (stringMat[finalI].equals("M")) {
                         Image image = new Image("ressources/smileyPleure.png");
                         iv.setImage(image);

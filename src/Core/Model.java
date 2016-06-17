@@ -17,10 +17,9 @@ public class Model extends Observable {
     int score;
     Board board;
 
-    public void leftClick(Board board, int row, int col) {
+    public void leftClick(int row, int col) {
         board.removeFlag(row, col);
         System.out.println("Clic gauche");
-        this.board = board;
         boolean status = board.gameIsWon();
         if (status) {
             state = "<VICTORY !>";
@@ -37,9 +36,8 @@ public class Model extends Observable {
         notifyObservers();
     }
 
-    public void rightClick(Board board, int row, int col) {
+    public void rightClick(int row, int col) {
         System.out.println("Clic droit");
-        this.board = board;
         Square[][] squares = board.getSquares();
         if (squares[row][col].isFlag()) {
             board.removeFlag(row, col);
@@ -51,9 +49,8 @@ public class Model extends Observable {
         notifyObservers();
     }
     
-    public void reset(Board board) {
-        this.board = board;
-        this.board.reset();
+    public void resetBoard(int rowSize, int colSize, int nbMines) {
+        board = new Board(rowSize, colSize, nbMines);
         
         setChanged();
         notifyObservers();
