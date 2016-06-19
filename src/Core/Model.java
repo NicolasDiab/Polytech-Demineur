@@ -56,7 +56,7 @@ public class Model extends Observable {
         notifyObservers();
     }
 
-    public String isWon() {
+    public String getStatus() {
         return state;
     }
 

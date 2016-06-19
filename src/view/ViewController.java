@@ -1,6 +1,5 @@
 package view;
 
-import core.Board;
 import core.Model;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -19,17 +18,19 @@ import java.util.Observable;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 public class ViewController extends Application {
 
     Model m;
     Text statusDisplay;
-    int column;
-    int row;
-    public String[] stringMat;
+    String[][] stringMat;
     GridPane gPane;
     BorderPane border;
+    Image imageSmillingSmiley = new Image("ressources/smileySouriant.png");
+    Image imageCryingSmiley = new Image("ressources/smileyPleure.png");
+    Image imageDrunkSmiley = new Image("ressources/smileyBourre.jpg");
 
     @Override
     public void start(Stage primaryStage) {
@@ -44,8 +45,7 @@ public class ViewController extends Application {
         // Smiley
         StackPane p = new StackPane();
         p.setPrefSize(15, 15);
-        Image image = new Image("ressources/smileySouriant.png");
-        ImageView iv = new ImageView(image);
+        ImageView iv = new ImageView(imageSmillingSmiley);
         p.getChildren().add(iv);
         StackPane.setAlignment(iv, Pos.CENTER);
 
@@ -54,15 +54,14 @@ public class ViewController extends Application {
             public void handle(MouseEvent event) {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     m.resetBoard(levelSize, levelSize, nbMines);
-                    stringMat = new String[(levelSize * levelSize)];
+                    stringMat = new String[levelSize][levelSize];
                     for (int x = 0; x < levelSize; ++x) {
                         for (int y = 0; y < levelSize; ++y) {
-                            stringMat[levelSize * y + x] = " ";
+                            stringMat[x][y] = " ";
                         }
                     }
-                    statusDisplay.setText("<RUNNING>"); 
-                    Image image = new Image("ressources/smileySouriant.png");
-                    iv.setImage(image);
+                    statusDisplay.setText("<RUNNING>");
+                    iv.setImage(imageSmillingSmiley);
                     
                     gPane = new GridPane();
                     gPane.setGridLinesVisible(true);
@@ -73,8 +72,6 @@ public class ViewController extends Application {
         });
         border.setTop(p);
 
-        column = 0;
-        row = 0;
         statusDisplay = new Text("");
         statusDisplay.setFont(Font.font("Arial", 20));
         statusDisplay.setFill(Color.RED);
@@ -82,10 +79,10 @@ public class ViewController extends Application {
 
         m.resetBoard(levelSize, levelSize, nbMines);
 
-        stringMat = new String[(levelSize * levelSize)];
+        stringMat = new String[levelSize][levelSize];
         for (int x = 0; x < levelSize; ++x) {
             for (int y = 0; y < levelSize; ++y) {
-                stringMat[levelSize * y + x] = " ";
+                stringMat[x][y] = " ";
             }
         }
 
@@ -107,101 +104,101 @@ public class ViewController extends Application {
     }
 
     public void updateView(GridPane gPane, ImageView iv, int levelSize) {
-        for (int x = 0; x < levelSize; ++x) {
-            for (int y = 0; y < levelSize; ++y) {
-                if (m.getBoard().getSquares()[x][y].isFlag()) {
-                    stringMat[levelSize * y + x] = "F";
+        for (int row=0; row<levelSize; row++) {
+            for (int col=0; col<levelSize; col++) {
+                if (m.getBoard().getSquares()[row][col].isFlag()) {
+                    
+                    
+                    
+                    stringMat[row][col] = "F";
                 }
-                if (m.getBoard().getSquares()[x][y].isVisible()) {
-                    if (m.getBoard().getSquares()[x][y].isMine()) {
-                        stringMat[levelSize * y + x] = "M";
+                if (m.getBoard().getSquares()[row][col].isVisible()) {
+                    if (m.getBoard().getSquares()[row][col].isMine()) {
+                        stringMat[row][col] = "M";
                     } else {
-                        stringMat[levelSize * y + x] = m.getBoard().getSquares()[x][y]
+                        stringMat[row][col] = m.getBoard().getSquares()[row][col]
                                 .getNbNeighbourMines() + "";
                     }
                 }
-            }
-        }
-        column = 0;
-        row = 0;
-        // Reconstruction du BOARD
-        for (int i = 0; i < levelSize * levelSize; ++i) {
-            final Text t = new Text(stringMat[i]);
-            t.setWrappingWidth(30);
-            t.setFont(Font.font("Arial", 20));
-            t.setTextAlignment(TextAlignment.CENTER);
-
-            switch (stringMat[i]) {
-                case "0":
-                    t.setFill(Color.WHEAT);
-                    break;
-                case "1":
-                    t.setFill(Color.BLUE);
-                    break;
-                case "2":
-                    t.setFill(Color.GREEN);
-                    break;
-                case "3":
-                    t.setFill(Color.RED);
-                    break;
-                case "4":
-                    t.setFill(Color.BLUEVIOLET);
-                    break;
-                case "5":
-                    t.setFill(Color.FIREBRICK);
-                    break;
-                case "6":
-                    t.setFill(Color.AQUAMARINE);
-                    break;
-                case "7":
-                    t.setFill(Color.BLACK);
-                    break;
-                case "8":
-                    t.setFill(Color.GRAY);
-                    break;
-                case "F":
-                    t.setFill(Color.ORANGE);
-                    break;
-                case "M":
-                    t.setFill(Color.CHOCOLATE);
-                    break;
-            }
-
-            gPane.add(t, row, column++);
-
-            if (column > levelSize - 1) {
-                column = 0;
-                row++;
-            }
-
-            int finalI = i;
-            t.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Double div = (double) finalI / (double) levelSize;
-                    int intPart = div.intValue();
-                    // on multiplie pour éviter des erreurs d'arrondi liées à Java
-                    // on gère 3 décimales
-                    int decPart = (int) ((div * 1000 - (intPart * 1000)) / 50);
-                    if (event.getButton() == MouseButton.SECONDARY) {
-                        stringMat[finalI] = " ";
-                        m.rightClick(decPart, intPart);
-                    } else if (event.getButton() == MouseButton.PRIMARY) {
-                        m.leftClick(decPart, intPart);
-                    }
-                    if (stringMat[finalI].equals("M")) {
-                        Image image = new Image("ressources/smileyPleure.png");
-                        iv.setImage(image);
-                    }
+                
+                final Text t = new Text(stringMat[row][col]);
+                t.setWrappingWidth(30);
+                t.setFont(Font.font("Arial", 20));
+                t.setTextAlignment(TextAlignment.CENTER);
+                
+                switch (stringMat[row][col]) {
+                    case "0":
+                        t.setFill(Color.WHEAT);
+                        break;
+                    case "1":
+                        t.setFill(Color.BLUE);
+                        break;
+                    case "2":
+                        t.setFill(Color.GREEN);
+                        break;
+                    case "3":
+                        t.setFill(Color.RED);
+                        break;
+                    case "4":
+                        t.setFill(Color.BLUEVIOLET);
+                        break;
+                    case "5":
+                        t.setFill(Color.FIREBRICK);
+                        break;
+                    case "6":
+                        t.setFill(Color.AQUAMARINE);
+                        break;
+                    case "7":
+                        t.setFill(Color.BLACK);
+                        break;
+                    case "8":
+                        t.setFill(Color.GRAY);
+                        break;
+                    case "F":
+                        t.setFill(Color.ORANGE);
+                        break;
+                    case "M":
+                        t.setFill(Color.CHOCOLATE);
+                        break;
                 }
-            });
-        }
-        if (!statusDisplay.getText().equals("<DEFEAT !>")) {
-           statusDisplay.setText(m.isWon()); 
+
+                /*HBox hBox = new HBox(10);
+                Image mine = new Image("ressources/mine.png");
+                ImageView ivSquare = new ImageView(mine);
+                hBox.getChildren().addAll(ivSquare);*/
+                
+                gPane.add(t, row, col);
+
+                int finalRow = row;
+                int finalCol = col;
+                t.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getButton() == MouseButton.SECONDARY) {
+                            stringMat[finalRow][finalCol] = " ";
+                            m.rightClick(finalRow, finalCol);
+                        } else if (event.getButton() == MouseButton.PRIMARY) {
+                            m.leftClick(finalRow, finalCol);
+                            if (stringMat[finalRow][finalCol].equals("F")) {
+                                stringMat[finalRow][finalCol] = " ";
+                            } else if (stringMat[finalRow][finalCol].equals(" ")) {
+                                stringMat[finalRow][finalCol] = "F";
+                            }
+                        }
+                        if (stringMat[finalRow][finalCol].equals("M")) {
+                            iv.setImage(imageCryingSmiley);
+                        }
+                    }
+                });
+            
+                if (!statusDisplay.getText().equals("<DEFEAT !>")) {
+                   statusDisplay.setText(m.getStatus()); 
+                }
+            }
         }
     }
 
     public static void main(String[] args) {
-        launch(args);
+        launch();
     }
 }
