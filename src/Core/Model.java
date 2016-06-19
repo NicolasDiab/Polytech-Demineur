@@ -16,20 +16,31 @@ public class Model extends Observable {
     String state;
     int score;
     Board board;
+    
+    public Model(int rowSize, int colSize, int nbMines) {
+        super();
+        this.state = "NEW GAME";
+        this.board = new Board(rowSize, colSize, nbMines);
+        this.score = 0;
+        
+        setChanged();
+        notifyObservers();
+    }
 
     public void leftClick(int row, int col) {
-        board.removeFlag(row, col);
-        System.out.println("Clic gauche");
-        boolean status = board.gameIsWon();
-        if (status) {
-            state = "<VICTORY !>";
-        } else if (board.squareIsMine(row, col)) {
-            board.allMinesVisible();
-            state = "<DEFEAT !>";
-            board.clic(row, col);
-        } else {
-            state = "<Running>";
-            board.clic(row, col);
+        if (!state.equals("DEFEAT") && !state.equals("VICTORY")) {
+            board.removeFlag(row, col);
+            boolean status = board.gameIsWon();
+            if (status) {
+                state = "VICTORY";
+            } else if (board.squareIsMine(row, col)) {
+                board.allMinesVisible();
+                state = "DEFEAT";
+                board.clic(row, col);
+            } else {
+                state = "RUNNING";
+                board.clic(row, col);
+            }
         }
 
         setChanged();
@@ -37,7 +48,6 @@ public class Model extends Observable {
     }
 
     public void rightClick(int row, int col) {
-        System.out.println("Clic droit");
         Square[][] squares = board.getSquares();
         if (squares[row][col].isFlag()) {
             board.removeFlag(row, col);
@@ -50,6 +60,7 @@ public class Model extends Observable {
     }
     
     public void resetBoard(int rowSize, int colSize, int nbMines) {
+        state =  "NEW GAME";
         board = new Board(rowSize, colSize, nbMines);
         
         setChanged();
@@ -66,5 +77,17 @@ public class Model extends Observable {
 
     public Board getBoard() {
         return board;
+    }
+    
+    public int getRowSize() {
+        return board.getRows();
+    }
+    
+    public int getColSize() {
+        return board.getColumns();
+    }
+    
+    public int getNbMines() {
+        return board.getMines();
     }
 }

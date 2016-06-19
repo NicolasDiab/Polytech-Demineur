@@ -34,8 +34,8 @@ public class Board {
 
     // Constructor method. Add squares to the map
     private void addSquares() {
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < columns; ++j) {
+        for (int i = 0; i < getRows(); ++i) {
+            for (int j = 0; j < getColumns(); ++j) {
                 Square square = new Square(i, j);
                 squares[i][j] = square;
             }
@@ -46,12 +46,12 @@ public class Board {
     private void addMines() {
         // add "mines" random mines to the board
         Random rn = new Random();
-        for (int i = 0; i < mines; ++i) {
+        for (int i = 0; i < getMines(); ++i) {
             int row;
             int column;
             do {
-                row = rn.nextInt(rows); // int between 0 and rows-1 / columns-1
-                column = rn.nextInt(columns);
+                row = rn.nextInt(getRows()); // int between 0 and rows-1 / columns-1
+                column = rn.nextInt(getColumns());
             } while (squares[row][column].isMine());
             squares[row][column].setMine(true);
 
@@ -70,10 +70,10 @@ public class Board {
         // loop for 3*3 squares around the middle one
         // if side board is reached don't loop in
         int i = (row == 0) ? row : row - 1;
-        int maxI = (row == this.rows - 1) ? row : row + 1;
+        int maxI = (row == this.getRows() - 1) ? row : row + 1;
         int retainJ = (column == 0) ? column : column - 1;
         int j = retainJ;
-        int maxJ = (column == this.columns - 1) ? column : column + 1;
+        int maxJ = (column == this.getColumns() - 1) ? column : column + 1;
         for (; i <= maxI; i++) {
             for (; j <= maxJ; j++) {
                 if (i != column || j != row) {
@@ -134,7 +134,7 @@ public class Board {
     }
     
     public void reset() {
-        squares = new Square[this.rows][this.columns];
+        squares = new Square[this.getRows()][this.getColumns()];
 
         // add squares
         addSquares();
@@ -144,8 +144,8 @@ public class Board {
     }
 
     public boolean gameIsWon() {
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < columns; ++j) {
+        for (int i = 0; i < getRows(); ++i) {
+            for (int j = 0; j < getColumns(); ++j) {
                 Square square = squares[i][j];
                 if (!square.isVisible() && !square.isMine()) {
                     return false;
@@ -173,12 +173,35 @@ public class Board {
     }
 
     public void allMinesVisible() {
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < columns; ++j) {
+        for (int i = 0; i < getRows(); ++i) {
+            for (int j = 0; j < getColumns(); ++j) {
                 if (squares[i][j].isMine()) {
                     squares[i][j].setVisible(true);
                 }
             }
         }
     }
+
+    /**
+     * @return the rows
+     */
+    public int getRows() {
+        return rows;
+    }
+
+    /**
+     * @return the columns
+     */
+    public int getColumns() {
+        return columns;
+    }
+
+    /**
+     * @return the mines
+     */
+    public int getMines() {
+        return mines;
+    }
+    
+    
 }
